@@ -40,11 +40,11 @@ public class Truck implements Entity{
 		this.b2dCam = b2dCam;
 		rollers = new ArrayList<Body>();
 		
-		cargo = BodyCreationUtils.rectangularBody(10f,world, 165 / Globals.PPM,218 / Globals.PPM,20 / Globals.PPM, 10 / Globals.PPM);	
+		//cargo = BodyCreationUtils.rectangularBody(10f,world, 165 / Globals.PPM,218 / Globals.PPM,20 / Globals.PPM, 10 / Globals.PPM);	
 		BodyUserData bud = new BodyUserData();
 		bud.setHeight(10);
 		bud.setWidth(20);
-		cargo.setUserData(bud);
+		//cargo.setUserData(bud);
 		
 		
 		
@@ -222,16 +222,16 @@ public class Truck implements Entity{
 		
 		for (Entry<Integer, MyInput.MonitorCoordinate> entry : MyInput.getActivePointers().entrySet()) {
 			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
-			if (entry.getValue().getX() < 234
-					&& entry.getValue().getY() > 525) {
+			if (entry.getValue().getX() < Globals.V_WIDTH / 2
+					&& entry.getValue().getY() > Globals.V_HEIGHT / 2) {
 				for(Body roller : rollers)
 				{
 					roller.applyAngularImpulse(force, true);
 				}		
 		
 			}
-			if (entry.getValue().getX() > 234
-					&& entry.getValue().getY() > 525) {
+			if (entry.getValue().getX() > Globals.V_WIDTH / 2
+					&& entry.getValue().getY() > Globals.V_HEIGHT / 2) {
 				for(Body roller : rollers)
 				{
 					roller.applyAngularImpulse(-force, true);
@@ -281,15 +281,18 @@ public class Truck implements Entity{
 		
 		
 		
-		
-		sb.draw(new TextureRegion(
-				Game.res.getTexture("box25")),
-				cargo.getPosition().x- ((BodyUserData)cargo.getUserData()).getHeight()/(Globals.PPM * 2), cargo.getPosition().y- ((BodyUserData)cargo.getUserData()).getWidth()/(Globals.PPM * 2),
-				((BodyUserData)cargo.getUserData()).getHeight()/(Globals.PPM * 2),((BodyUserData)cargo.getUserData()).getWidth()/(Globals.PPM * 2),
-				((BodyUserData)cargo.getUserData()).getHeight()/Globals.PPM, ((BodyUserData)cargo.getUserData()).getWidth()/Globals.PPM,
-				2, 2,
-				cargo.getAngle() * MathUtils.radiansToDegrees + 90f, false);
+		if(cargo != null)
+		{
+			sb.draw(new TextureRegion(
+					Game.res.getTexture("box25")),
+					cargo.getPosition().x- ((BodyUserData)cargo.getUserData()).getHeight()/(Globals.PPM * 2), cargo.getPosition().y- ((BodyUserData)cargo.getUserData()).getWidth()/(Globals.PPM * 2),
+					((BodyUserData)cargo.getUserData()).getHeight()/(Globals.PPM * 2),((BodyUserData)cargo.getUserData()).getWidth()/(Globals.PPM * 2),
+					((BodyUserData)cargo.getUserData()).getHeight()/Globals.PPM, ((BodyUserData)cargo.getUserData()).getWidth()/Globals.PPM,
+					2, 2,
+					cargo.getAngle() * MathUtils.radiansToDegrees + 90f, false);
 
+		}
+	
 		
 		sb.end();
 	}

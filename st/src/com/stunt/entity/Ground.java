@@ -43,7 +43,7 @@ public class Ground implements Entity {
 		
 		this.world = world;
 		this.b2dCam = b2dCam;
-		//obstacles = createObstacles();
+		obstacles = createObstacles();
 		
 		float[] vert = ta.getPolyline().getVertices();
 		vectorArray = new Vector2[vert.length / 2];
@@ -125,7 +125,7 @@ public class Ground implements Entity {
 		
 		float tLength = 4f;
 		float twidth = 1f;
-		Body[] track = new Body[11];
+		Body[] track = new Body[3];
 		float length = (float) (101  / Globals.PPM);
 		float delta = (float) (tLength/Globals.PPM)*2;	
 		
@@ -134,7 +134,7 @@ public class Ground implements Entity {
 		
 		 tLength = 5f;
 		 twidth = 5f;
-		 track = new Body[128];
+		 track = new Body[28];
 		 length = (float) (634  / Globals.PPM);
 		 delta = 8 / Globals.PPM ;
 		
@@ -159,8 +159,8 @@ public class Ground implements Entity {
 		
 		
 		 tLength = 1f;
-		 twidth = 15f;
-		 track = new Body[228];
+		 twidth = 14f;
+		 track = new Body[20];
 		 length = (float) (634  / Globals.PPM);
 		 delta = 8 / Globals.PPM ;
 		
@@ -185,9 +185,9 @@ public class Ground implements Entity {
 		
 		
 		
-		 tLength = 15f;
-		 twidth = 15f;
-		 track = new Body[28];
+		 tLength = 10;
+		 twidth = 10f;
+		 track = new Body[8];
 		 length = (float) (1234  / Globals.PPM);
 		 delta = 20 / Globals.PPM ;
 		
@@ -209,7 +209,7 @@ public class Ground implements Entity {
 		
 		 tLength = 25f;
 		 twidth = 25f;
-		 track = new Body[28];
+		 track = new Body[3];
 		 length = (float) (1434  / Globals.PPM);
 		 delta = 27 / Globals.PPM ;
 		

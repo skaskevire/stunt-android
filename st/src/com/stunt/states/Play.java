@@ -86,27 +86,40 @@ public class Play extends GameState{
 
 	@Override
 	public void update(float dt) {
-		
+		try{
+			handleInput();
+			world.step(dt, 6, 2);
+			
+			
+			sb.setProjectionMatrix(b2dCam.combined);
+		}catch(Exception e)
+		{
+			gsm.setState(Globals.MAINMENU_GS);
+		}
 
-		handleInput();
-		world.step(dt, 6, 2);
-		
-		
-		sb.setProjectionMatrix(b2dCam.combined);
+
 	}
 
 	@Override
 	public void render() {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		
-		for(Entity entity: entities.values())
+		try
 		{
-			entity.render(sb);
-		}
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		tmr.setView(b2dCam);
-		tmr.render();	
+			
+			for(Entity entity: entities.values())
+			{
+				entity.render(sb);
+			}
+
+			tmr.setView(b2dCam);
+			tmr.render();	
+		}
+		catch(Exception e)
+		{
+			gsm.setState(Globals.MAINMENU_GS);
+		}
+		
 
 	//	b2dr.render(world,b2dCam.combined);
 		
