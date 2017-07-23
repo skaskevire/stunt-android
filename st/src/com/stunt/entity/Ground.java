@@ -1,17 +1,13 @@
 package com.stunt.entity;
 
-import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
@@ -33,7 +29,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 public class Ground implements Entity {
 	private World world;
 	private List<Body> obstacles;
-	private Body ground;OrthographicCamera b2dCam;
+	private Body ground;
+	OrthographicCamera b2dCam;
+	
+	
+	private PolygonSprite groundPolygon;
+	 PolygonSpriteBatch polyBatch;
 	
 	
 	Vector2[] vectorArray;
@@ -54,6 +55,43 @@ public class Ground implements Entity {
 		
 		
 		ground = createTerrain(world, 0,-40 / Globals.PPM, vectorArray);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//create ground polygon
+		EarClippingTriangulator a = new EarClippingTriangulator();
+
+		 float[] vertices = new float[vectorArray.length * 2];
+		int vl = 0;
+		 for (int i = 0; i < vectorArray.length ; i++) {
+		        vertices[vl] = vectorArray[i].x;
+		        vl++;
+		        vertices[vl] = vectorArray[i].y - 40/ Globals.PPM;
+		        vl++;
+		    }
+		 ShortArray sar = a.computeTriangles(vertices);
+		 short[] shortarray = new short[sar.size];
+		    for (int i = 0; i < sar.size; i++)
+		        shortarray[i] = sar.get(i);
+		 
+		    PolygonRegion pr = new PolygonRegion(new TextureRegion(
+					Game.res.getTexture("terrain1")), vertices, shortarray);
+		    groundPolygon = new PolygonSprite(pr);
+		    
+		    
+		    
+		     polyBatch = new PolygonSpriteBatch();
+		    
 	}
 	
 	
@@ -240,35 +278,13 @@ public class Ground implements Entity {
 	}
 
 	@Override
-	public void render(SpriteBatch sb) {
+	public void render(SpriteBatch sb) {		    
 
-
-		
-		EarClippingTriangulator a = new EarClippingTriangulator();
-
-		 float[] vertices = new float[vectorArray.length * 2];
-		int vl = 0;
-		 for (int i = 0; i < vectorArray.length ; i++) {
-		        vertices[vl] = vectorArray[i].x;
-		        vl++;
-		        vertices[vl] = vectorArray[i].y - 40/ Globals.PPM;
-		        vl++;
-		    }
-		 ShortArray sar = a.computeTriangles(vertices);
-		 short[] shortarray = new short[sar.size];
-		    for (int i = 0; i < sar.size; i++)
-		        shortarray[i] = sar.get(i);
-		 
-		    PolygonRegion pr = new PolygonRegion(new TextureRegion(
-					Game.res.getTexture("terrain1")), vertices, shortarray);
-		    PolygonSprite poly = new PolygonSprite(pr);
-		    PolygonSpriteBatch polyBatch = new PolygonSpriteBatch();
-		    polyBatch.setProjectionMatrix(sb.getProjectionMatrix());
-		   
+		polyBatch.setProjectionMatrix(sb.getProjectionMatrix());
 		    
 		    
 		    polyBatch.begin();
-		    poly.draw(polyBatch);
+		    groundPolygon.draw(polyBatch);
 		    polyBatch.end();
 		
 		

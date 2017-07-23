@@ -40,6 +40,24 @@ public final class BodyCreationUtils {
 		return body;
 	}
 	
+	public static Body rectangularStaticBody(float density, World world, float x, float y, float width, float height)
+	{
+		PolygonShape psh = new PolygonShape();
+		FixtureDef fdef = new FixtureDef();
+		BodyDef bdef = new BodyDef();		
+		bdef.position.set(x, y);
+		bdef.type  = BodyType.StaticBody;
+		Body body = world.createBody(bdef);		
+		psh.setAsBox(width, height);
+		fdef.shape = psh;	
+		fdef.restitution = 0.4f;
+		fdef.density = density;
+		fdef.friction = 0.8f;
+		body.createFixture(fdef);
+		
+		return body;
+	}
+	
 	public static FixtureDef createPolygonFixture(float width, float height, float restitution, float density, float friction, Vector2 directionCenter, float angle)
 	{
 		PolygonShape psh = new PolygonShape();

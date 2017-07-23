@@ -24,11 +24,10 @@ public class MainMenu extends GameState {
 	@Override
 	public void handleInput()
 	{
-		playTapped = true;
 		for (Entry<Integer, MyInput.MonitorCoordinate> entry : MyInput.getActivePointers().entrySet()) {
 			System.out.println(entry.getValue().getX() + " " + entry.getValue().getY());
-			if (entry.getValue().getX() > 232 - 10 && entry.getValue().getX() < 232 + 10
-					&& entry.getValue().getY() < 295 + 10 && entry.getValue().getY() > 295 - 10) {
+			if (entry.getValue().getX() > Globals.V_WIDTH / 2.5f - Globals.V_WIDTH / 20 && entry.getValue().getX() < Globals.V_WIDTH / 2.5f + Globals.V_WIDTH / 20
+					&& entry.getValue().getY() < Globals.V_HEIGHT / 1.8f  && entry.getValue().getY() > Globals.V_HEIGHT / 2.5f - Globals.V_HEIGHT/28) {
 				play.setColor(Color.GOLD);
 
 				playTapped = true;
@@ -58,10 +57,10 @@ public class MainMenu extends GameState {
 		sb.setProjectionMatrix(cam.combined);
 		sb.begin();
 		stunt.setColor(Color.BLUE);
-		stunt.draw(sb, "Stunt", 100, 300);
-		play.draw(sb, "Play", 100, 180);
+		stunt.draw(sb, "Stunt", Globals.V_WIDTH / 2.5f,  Globals.V_HEIGHT/1.1f);
+		play.draw(sb, "Play",  Globals.V_WIDTH / 2.5f, Globals.V_HEIGHT / 1.8f);
 		settings.setColor(Color.WHITE);
-		settings.draw(sb, "Settings", 100, 160);
+		settings.draw(sb, "Settings", Globals.V_WIDTH / 2.5f, Globals.V_HEIGHT / 2.2f);
 		sb.end();
 
 	}

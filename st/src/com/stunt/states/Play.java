@@ -9,20 +9,28 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.stunt.Globals;
 import com.stunt.entity.Background;
 import com.stunt.entity.Entity;
 import com.stunt.entity.Ground;
 import com.stunt.entity.Truck;
 import com.stunt.handlers.GameStateManager;
+import com.stunt.util.BodyCreationUtils;
+import com.stunt.util.FinishLineListener;
 
 public class Play extends GameState{
 	
@@ -46,7 +54,7 @@ public class Play extends GameState{
 		
 		world = new World(new Vector2(0,-1.8f), true);
 		b2dr = new Box2DDebugRenderer();
-
+		//world.setContactListener(new FinishLineListener(gsm));
 		
 		b2dCam = new OrthographicCamera();
 		b2dCam.setToOrtho(false, Globals.V_WIDTH / Globals.PPM, Globals.V_HEIGHT / Globals.PPM );
@@ -64,11 +72,17 @@ public class Play extends GameState{
 		TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
 		layer.setOffsetX(0f);
 		layer.setOffsetY(808f);
-		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get(0);
+		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("ground");
 		
 		
+		//RectangleMapObject finishLine = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
 		
 		
+		//BodyCreationUtils.rectangularStaticBody(1f, world, finishLine.getRectangle().x / Globals.PPM, finishLine.getRectangle().y/ Globals.PPM, finishLine.getRectangle().width/ Globals.PPM, finishLine.getRectangle().height/ Globals.PPM);
+
+		
+		
+
 		entities.put("ground", new Ground(world, b2dCam, ta));
 
 		tileSize = layer.getTileWidth();

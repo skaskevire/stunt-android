@@ -8,8 +8,8 @@ public class StuntDesktop {
 	{
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = Globals.GAME_TITLE;
-		cfg.width = Globals.V_WIDTH * Globals.SCALE;
-		cfg.height = Globals.V_HEIGHT * Globals.SCALE;
+		cfg.width = Globals.V_WIDTH;
+		cfg.height = Globals.V_HEIGHT;
 		
 		new LwjglApplication(new Game(), cfg);
 	}
