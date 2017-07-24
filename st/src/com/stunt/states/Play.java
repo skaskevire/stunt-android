@@ -48,7 +48,8 @@ public class Play extends GameState{
 	private OrthogonalTiledMapRenderer tmr;
 	private Map<String, Entity> entities;
 
-
+	private Body finish;
+	
 	public Play(GameStateManager gsm) {
 		super(gsm);
 		
@@ -61,7 +62,7 @@ public class Play extends GameState{
 		
 		entities = new HashMap<String, Entity>();
 		
-		entities.put("truck", new Truck(world, b2dCam));
+		entities.put("truck", new Truck(world, b2dCam, 0, 1330/Globals.PPM));
 		//entities.put("background", new Background());		
 		
 		//////////// < tiled staff >
@@ -78,7 +79,7 @@ public class Play extends GameState{
 		//RectangleMapObject finishLine = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
 		
 		
-		//BodyCreationUtils.rectangularStaticBody(1f, world, finishLine.getRectangle().x / Globals.PPM, finishLine.getRectangle().y/ Globals.PPM, finishLine.getRectangle().width/ Globals.PPM, finishLine.getRectangle().height/ Globals.PPM);
+		//finish  = BodyCreationUtils.rectangularStaticBody(1f, world, finishLine.getRectangle().x / Globals.PPM, finishLine.getRectangle().y/ Globals.PPM, finishLine.getRectangle().width/ Globals.PPM, finishLine.getRectangle().height/ Globals.PPM);
 
 		
 		

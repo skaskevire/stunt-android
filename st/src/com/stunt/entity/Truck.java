@@ -34,7 +34,7 @@ public class Truck implements Entity{
 	private Body truckBody;
 	private OrthographicCamera b2dCam;
 	
-	public Truck(World world, OrthographicCamera b2dCam)
+	public Truck(World world, OrthographicCamera b2dCam, float x, float y)
 	{
 		this.world = world;
 		this.b2dCam = b2dCam;
@@ -49,22 +49,22 @@ public class Truck implements Entity{
 		
 		
 		
-		truckBody = createTruckBody(10f, world, 160 / Globals.PPM,120 / Globals.PPM,33 / Globals.PPM, 3 / Globals.PPM);
+		truckBody = createTruckBody(10f, world, x + 160 / Globals.PPM, y + 120 / Globals.PPM,33 / Globals.PPM, 3 / Globals.PPM);
 	
-		tracks = createTracks();
-		createRollers();
-		attachWheels(truckBody);
+		tracks = createTracks(x, y);
+		createRollers(x, y);
+		attachWheels(truckBody,x,y);
 		
 	}
 	
-	private void attachWheels(Body body)
+	private void attachWheels(Body body, float x, float y)
 	{
-		Body d1 = BodyCreationUtils.rectangularBody(30f,world, 110 / Globals.PPM,110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
-		Body d2 = BodyCreationUtils.rectangularBody(30f,world, 130 / Globals.PPM,110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
-		Body d3 = BodyCreationUtils.rectangularBody(30f,world, 150 / Globals.PPM,110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
-		Body d4 = BodyCreationUtils.rectangularBody(30f,world, 170 / Globals.PPM,110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
-		Body d5 = BodyCreationUtils.rectangularBody(40f,world, 190 / Globals.PPM,110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
-		Body d6 = BodyCreationUtils.rectangularBody(30f, world, 210 / Globals.PPM,120 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);
+		Body d1 = BodyCreationUtils.rectangularBody(30f,world, x+110 / Globals.PPM,y+110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
+		Body d2 = BodyCreationUtils.rectangularBody(30f,world, x+130 / Globals.PPM,y+110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
+		Body d3 = BodyCreationUtils.rectangularBody(30f,world, x+150 / Globals.PPM,y+110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
+		Body d4 = BodyCreationUtils.rectangularBody(30f,world, x+170 / Globals.PPM,y+110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
+		Body d5 = BodyCreationUtils.rectangularBody(40f,world, x+190 / Globals.PPM,y+110 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);	
+		Body d6 = BodyCreationUtils.rectangularBody(30f, world,x+ 210 / Globals.PPM,y+120 / Globals.PPM,2 / Globals.PPM, 4 / Globals.PPM);
 		
 		BodyCreationUtils.vzhJoint(world, body, d1, -50/Globals.PPM,-0/Globals.PPM, 0,12/Globals.PPM);
 		BodyCreationUtils.vzhJoint(world, body, d2, -30/Globals.PPM,-0/Globals.PPM, 0,12/Globals.PPM);	
@@ -89,14 +89,14 @@ public class Truck implements Entity{
 	}	
 	
 	
-	private void createRollers()
+	private void createRollers(float x, float y)
 	{
-		rollers.add(BodyCreationUtils.circularBody(world, 110 / Globals.PPM, 100 / Globals.PPM, 5 / Globals.PPM));		
-		rollers.add(BodyCreationUtils.circularBody(world, 130 / Globals.PPM, 100 / Globals.PPM, 5 / Globals.PPM));
-		rollers.add(BodyCreationUtils.circularBody(world, 150 / Globals.PPM, 100 / Globals.PPM, 5 / Globals.PPM));
-		rollers.add(BodyCreationUtils.circularBody(world, 170 / Globals.PPM, 100 / Globals.PPM, 5 / Globals.PPM));
-		rollers.add(BodyCreationUtils.circularBody(world, 190 / Globals.PPM, 100 / Globals.PPM, 5 / Globals.PPM));
-		rollers.add(BodyCreationUtils.circularBody(world, 210 / Globals.PPM, 110 / Globals.PPM, 5 / Globals.PPM));
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 110 / Globals.PPM,y+ 100 / Globals.PPM, 5 / Globals.PPM));		
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 130 / Globals.PPM,y+ 100 / Globals.PPM, 5 / Globals.PPM));
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 150 / Globals.PPM,y+ 100 / Globals.PPM, 5 / Globals.PPM));
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 170 / Globals.PPM,y+ 100 / Globals.PPM, 5 / Globals.PPM));
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 190 / Globals.PPM,y+ 100 / Globals.PPM, 5 / Globals.PPM));
+		rollers.add(BodyCreationUtils.circularBody(world,x+ 210 / Globals.PPM,y+ 110 / Globals.PPM, 5 / Globals.PPM));
 	}
 	
 	
@@ -121,16 +121,16 @@ public class Truck implements Entity{
 		return body;
 	}
 	
-	private List<Body> createTracks()
+	private List<Body> createTracks(float x, float y)
 	{
 		float tLength = 4f;
 		float twidth = 1f;
 		Body[] track = new Body[11];
-		float length = (float) (101  / Globals.PPM);
+		float length =(float)x + (float) (101  / Globals.PPM);
 		float delta = (float) (tLength/Globals.PPM)*2;	
 		for (int i = 0; i < track.length; i++) {
 			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,103 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
+			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,(float)y + 103 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
 			track[i] = tr;
 		}	
 		for (int i = 0; i < track.length; i++) {
@@ -146,11 +146,11 @@ public class Truck implements Entity{
 		 tLength = 4f;
 		 twidth = 1f;
 		Body[] trackttt = new Body[4];
-		 length = (float) (190  / Globals.PPM);
+		 length =(float)x+ (float) (190  / Globals.PPM);
 		 delta = (float) (tLength/Globals.PPM)*2;	
 		for (int i = 0; i < trackttt.length; i++) {
 			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,114 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
+			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,(float)y+ 114 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
 			trackttt[i] = tr;
 		}	
 		for (int i = 0; i < trackttt.length; i++) {
@@ -171,13 +171,13 @@ public class Truck implements Entity{
 		 tLength = 4f;
 		 twidth = 1f;
 		Body[] trackl = new Body[14];
-		 length = (float) (101  / Globals.PPM);
+		 length =(float)x+  (float) (101  / Globals.PPM);
 		 delta = (float) (tLength/Globals.PPM)*2;
 		
 		
 		for (int i = 0; i < trackl.length; i++) {
 			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,89 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
+			Body tr= BodyCreationUtils.rectangularBody(10f,world, length,(float)y+ 89 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
 			trackl[i] = tr;
 		}
 		

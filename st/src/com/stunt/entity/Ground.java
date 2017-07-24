@@ -50,11 +50,11 @@ public class Ground implements Entity {
 		vectorArray = new Vector2[vert.length / 2];
 		for(int i = 0,  vaI = 0 ;i < vert.length; i+=2)
 		{
-			vectorArray[vaI++] = new Vector2(vert[i]/ Globals.PPM, vert[i+1]/ Globals.PPM);
+			vectorArray[vaI++] = new Vector2(vert[i]/ Globals.PPM + ta.getPolyline().getX()/ Globals.PPM, vert[i+1]/ Globals.PPM + ta.getPolyline().getY()/ Globals.PPM);
 		}
 		
 		
-		ground = createTerrain(world, 0,-40 / Globals.PPM, vectorArray);
+		ground = createTerrain(world, 0,0 / Globals.PPM, vectorArray);
 		
 		
 		
@@ -76,7 +76,7 @@ public class Ground implements Entity {
 		 for (int i = 0; i < vectorArray.length ; i++) {
 		        vertices[vl] = vectorArray[i].x;
 		        vl++;
-		        vertices[vl] = vectorArray[i].y - 40/ Globals.PPM;
+		        vertices[vl] = vectorArray[i].y;
 		        vl++;
 		    }
 		 ShortArray sar = a.computeTriangles(vertices);
