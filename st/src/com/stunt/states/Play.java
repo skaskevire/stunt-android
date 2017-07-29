@@ -4,32 +4,25 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.stunt.Globals;
-import com.stunt.entity.Background;
 import com.stunt.entity.Entity;
 import com.stunt.entity.Ground;
 import com.stunt.entity.Truck;
 import com.stunt.handlers.GameStateManager;
-import com.stunt.util.BodyCreationUtils;
+import com.stunt.handlers.MyInputProcessor;
 import com.stunt.util.FinishLineListener;
 
 public class Play extends GameState{
@@ -47,15 +40,13 @@ public class Play extends GameState{
 	private TiledMap tileMap;
 	private OrthogonalTiledMapRenderer tmr;
 	private Map<String, Entity> entities;
-
-	private Body finish;
 	
-	public Play(GameStateManager gsm) {
+	public Play(GameStateManager gsm, String levelPath) {
 		super(gsm);
-		
+		Gdx.input.setInputProcessor(new MyInputProcessor());
 		world = new World(new Vector2(0,-1.8f), true);
 		b2dr = new Box2DDebugRenderer();
-		//world.setContactListener(new FinishLineListener(gsm));
+		world.setContactListener(new FinishLineListener(gsm));
 		
 		b2dCam = new OrthographicCamera();
 		b2dCam.setToOrtho(false, Globals.V_WIDTH / Globals.PPM, Globals.V_HEIGHT / Globals.PPM );
@@ -67,24 +58,23 @@ public class Play extends GameState{
 		
 		//////////// < tiled staff >
 		
-		tileMap = new TmxMapLoader().load("res/maps/test.tmx");
+		tileMap = new TmxMapLoader().load(levelPath);
 		tmr = new OrthogonalTiledMapRenderer(tileMap,1 /Globals.PPM);
 
 		TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
 		layer.setOffsetX(0f);
 		layer.setOffsetY(808f);
 		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("ground");
+	RectangleMapObject finishLine = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
+	MapObjects obstacles = tileMap.getLayers().get("obstacles").getObjects();
+		
+	
+		
+	
 		
 		
-		//RectangleMapObject finishLine = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
-		
-		
-		//finish  = BodyCreationUtils.rectangularStaticBody(1f, world, finishLine.getRectangle().x / Globals.PPM, finishLine.getRectangle().y/ Globals.PPM, finishLine.getRectangle().width/ Globals.PPM, finishLine.getRectangle().height/ Globals.PPM);
 
-		
-		
-
-		entities.put("ground", new Ground(world, b2dCam, ta));
+		entities.put("ground", new Ground(world, b2dCam, ta, finishLine, obstacles));
 
 		tileSize = layer.getTileWidth();
 		

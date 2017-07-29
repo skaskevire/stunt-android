@@ -12,6 +12,8 @@ public class Globals {
 	//Game states
 	public static final int MAINMENU_GS = 1;
 	
+	public static final int CHOOSE_LEVEL_MENU_GS = 2;
+	
 	//Game configurations
 	public static final float STEP = 1 / 60f;
 

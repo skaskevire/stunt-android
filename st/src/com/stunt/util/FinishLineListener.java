@@ -17,27 +17,32 @@ public class FinishLineListener implements ContactListener{
 		this.gsm = gsm;
 	}
 	@Override
-	public void beginContact(Contact arg0) {
-		// TODO Auto-generated method stub
+	public void beginContact(Contact c) {
+		Fixture fa = c.getFixtureA();
+		Fixture fb = c.getFixtureB();
+		
+		if(fa.getBody().getUserData() != null &&fa.getBody().getUserData() instanceof BodyUserData)
+		{
+			BodyUserData dc = (BodyUserData)fa.getBody().getUserData();
+			if(dc.getName()!=null && dc.getName().equals("finishLine"))
+			{
+				gsm.setState(Globals.MAINMENU_GS);
+			}
+		}
+		if(fb.getBody().getUserData() != null &&fb.getBody().getUserData() instanceof BodyUserData)
+		{
+			BodyUserData dc = (BodyUserData)fb.getBody().getUserData();
+			if(dc.getName()!=null && dc.getName().equals("finishLine"))
+			{
+				gsm.setState(Globals.MAINMENU_GS);
+			}
+
+		}
 		
 	}
 
 	@Override
 	public void endContact(Contact c) {
-		Fixture fa = c.getFixtureA();
-		Fixture fb = c.getFixtureB();
-		
-		if(fa.getUserData() !=null && fb.getUserData() !=null&& (fa.getUserData().equals("finish") || fb.getUserData().equals("finish")))
-		{
-			if(fa.getUserData().equals("truckBody") || fb.getUserData().equals("truckBody"))
-			{
-				System.out.println("Finish!");
-				gsm.setState(Globals.MAINMENU_GS);
-			}
-			
-		}
-		
-		
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Stack;
 
 import com.stunt.Game;
 import com.stunt.Globals;
+import com.stunt.states.ChooseLevelMenu;
 import com.stunt.states.GameState;
 import com.stunt.states.MainMenu;
 import com.stunt.states.Play;
@@ -33,28 +34,33 @@ public class GameStateManager {
 	{
 		gameStates.peek().render();
 	}
-	public GameState getState(int state)
+	public GameState getState(int state, Object ... objects)
 	{
 		if(state == Globals.PLAY_GS)
 		{
-			return new Play(this);
+			String currentLevelPath = (String) objects[0];
+			return new Play(this, currentLevelPath);
 		}
 		if(state == Globals.MAINMENU_GS)
 		{
 			return new MainMenu(this);
 		}
+		if(state == Globals.CHOOSE_LEVEL_MENU_GS)
+		{
+			return new ChooseLevelMenu(this);
+		}
 		return null;
 	}
 	
-	public void setState(int state)
+	public void setState(int state, Object ... objects)
 	{
 		popState();
-		pushState(state);
+		pushState(state, objects);
 	}
 	
-	public void pushState(int state)
+	public void pushState(int state, Object ... objects)
 	{
-		gameStates.push(getState(state));
+		gameStates.push(getState(state, objects));
 	}
 	
 	public void popState()

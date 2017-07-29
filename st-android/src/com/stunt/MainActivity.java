@@ -1,11 +1,9 @@
 package com.stunt;
 
-import android.graphics.Point;
-import android.os.Bundle;
-import android.view.Display;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+
+import android.os.Bundle;
 
 public class MainActivity extends AndroidApplication {
     @Override

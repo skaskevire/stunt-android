@@ -1,7 +1,6 @@
 package com.stunt.entity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,12 +9,16 @@ import com.badlogic.gdx.graphics.g2d.PolygonSprite;
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -24,13 +27,13 @@ import com.stunt.Game;
 import com.stunt.Globals;
 import com.stunt.util.BodyCreationUtils;
 import com.stunt.util.BodyUserData;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class Ground implements Entity {
 	private World world;
 	private List<Body> obstacles;
 	private Body ground;
 	OrthographicCamera b2dCam;
+	private Body finishLine;
 	
 	
 	private PolygonSprite groundPolygon;
@@ -39,12 +42,38 @@ public class Ground implements Entity {
 	
 	Vector2[] vectorArray;
 	
-	public Ground(World world, OrthographicCamera b2dCam, PolylineMapObject ta)
-	{
-		
+	public Ground(World world, OrthographicCamera b2dCam, PolylineMapObject ta, RectangleMapObject ra, MapObjects obstacles1)
+	{	
+		List<Body> o1list = new ArrayList<Body>();
+		try
+		{
+			for(MapObject obstacle : obstacles1)
+			{
+				RectangleMapObject rmo = (RectangleMapObject) obstacle;
+
+				BodyUserData bud = new BodyUserData();
+				bud.setHeight(rmo.getRectangle().height/2);
+				bud.setWidth(rmo.getRectangle().width/2);
+				
+			
+				
+				
+				
+				
+				
+				Body rb = BodyCreationUtils.rectangularBody(80f, world, (rmo.getRectangle().x + rmo.getRectangle().width/2)/ Globals.PPM, (rmo.getRectangle().y + rmo.getRectangle().height/2)/ Globals.PPM, rmo.getRectangle().width/ (Globals.PPM*2), rmo.getRectangle().height/ (Globals.PPM*2));
+				rb.setUserData(bud);
+				o1list.add(rb);
+			}
+
+		}catch(Throwable e)
+		{
+			System.out.println("dsds");
+		}
+
 		this.world = world;
 		this.b2dCam = b2dCam;
-		obstacles = createObstacles();
+
 		
 		float[] vert = ta.getPolyline().getVertices();
 		vectorArray = new Vector2[vert.length / 2];
@@ -57,15 +86,14 @@ public class Ground implements Entity {
 		ground = createTerrain(world, 0,0 / Globals.PPM, vectorArray);
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		finishLine  = BodyCreationUtils.rectangularStaticBody(world, (ra.getRectangle().x + ra.getRectangle().width / 2)/ Globals.PPM, (ra.getRectangle().y + ra.getRectangle().height /2 )/ Globals.PPM, ra.getRectangle().width / (Globals.PPM*2), ra.getRectangle().height/ (Globals.PPM*2));
+		BodyUserData bud = new BodyUserData();
+		bud.setHeight(ra.getRectangle().height /2 );
+		bud.setWidth(ra.getRectangle().width/2);
+		bud.setName("finishLine");
+		finishLine.setUserData(bud);
+		obstacles = o1list;
+		obstacles.add(finishLine);
 		
 		
 		//create ground polygon
@@ -86,59 +114,12 @@ public class Ground implements Entity {
 		 
 		    PolygonRegion pr = new PolygonRegion(new TextureRegion(
 					Game.res.getTexture("terrain1")), vertices, shortarray);
-		    groundPolygon = new PolygonSprite(pr);
-		    
-		    
+		    groundPolygon = new PolygonSprite(pr);	    
 		    
 		     polyBatch = new PolygonSpriteBatch();
 		    
 	}
-	
-	
-	
-	
-	public Ground(World world, OrthographicCamera b2dCam)
-	{
-		this.world = world;
-		this.b2dCam = b2dCam;
-		vectorArray = createTerrainCurve();
-		obstacles = createObstacles();
-	}
-	
-	private Vector2[] createTerrainCurve()
-	{
-		Vector2[] vectorArray = new Vector2[24];
-		vectorArray[0] = new Vector2(0,30/ Globals.PPM);
-		vectorArray[1] = new Vector2(100/ Globals.PPM,60/ Globals.PPM);
-		vectorArray[2] = new Vector2(110/ Globals.PPM,70/ Globals.PPM);
-		vectorArray[3] = new Vector2(200/ Globals.PPM,40/ Globals.PPM);
-		vectorArray[4] = new Vector2(220/ Globals.PPM,50/ Globals.PPM);
-		vectorArray[5] = new Vector2(620/ Globals.PPM,50/ Globals.PPM);
-		vectorArray[6] = new Vector2(720/ Globals.PPM,100/ Globals.PPM);
-		vectorArray[7] = new Vector2(720/ Globals.PPM,50/ Globals.PPM);
-		vectorArray[8] = new Vector2(900/ Globals.PPM,40/ Globals.PPM);
-		vectorArray[9] = new Vector2(1200/ Globals.PPM,0/ Globals.PPM);
-		vectorArray[10] = new Vector2(5000/Globals.PPM,0/ Globals.PPM);
-		vectorArray[11] = new Vector2(5000/Globals.PPM,1000/ Globals.PPM);
-		
 
-		vectorArray[12] = new Vector2(5000/Globals.PPM,800/ Globals.PPM);
-		vectorArray[13] = new Vector2(5000/Globals.PPM,-200/ Globals.PPM);
-		vectorArray[14] = new Vector2(1200/ Globals.PPM,-200/ Globals.PPM);
-		vectorArray[15] = new Vector2(900/ Globals.PPM,-160/ Globals.PPM);
-		vectorArray[16] = new Vector2(720/ Globals.PPM,-150/ Globals.PPM);
-		vectorArray[17] = new Vector2(720/ Globals.PPM,-100/ Globals.PPM);
-		vectorArray[18] = new Vector2(620/ Globals.PPM,-150/ Globals.PPM);
-		vectorArray[19] = new Vector2(220/ Globals.PPM,-150/ Globals.PPM);
-		vectorArray[20] = new Vector2(200/ Globals.PPM,-160/ Globals.PPM);
-		vectorArray[21] = new Vector2(110/ Globals.PPM,-130/ Globals.PPM);
-		vectorArray[22] = new Vector2(100/ Globals.PPM,-140/ Globals.PPM);
-		vectorArray[23] = new Vector2(0,-170/ Globals.PPM);
-		ground = createTerrain(world, 0,-40 / Globals.PPM, vectorArray);
-		
-		return vectorArray;
-	}
-	
 	
 	private Body createTerrain(World world, float x, float y, Vector2[] vectorArray)
 	{
@@ -156,120 +137,7 @@ public class Ground implements Entity {
 		body.createFixture(fdef);
 		
 		return body;
-	}
-	
-	private List<Body> createObstacles()
-	{
-		
-		float tLength = 4f;
-		float twidth = 1f;
-		Body[] track = new Body[3];
-		float length = (float) (101  / Globals.PPM);
-		float delta = (float) (tLength/Globals.PPM)*2;	
-		
-		
-		
-		
-		 tLength = 5f;
-		 twidth = 5f;
-		 track = new Body[28];
-		 length = (float) (634  / Globals.PPM);
-		 delta = 8 / Globals.PPM ;
-		
-		
-		for (int i = 0; i < track.length; i++) {
-			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(80f,world, length,146 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
-			track[i] = tr;
-			
-			
-			BodyUserData bud = new BodyUserData();
-			bud.setHeight(twidth);
-			bud.setWidth(tLength);
-			track[i].setUserData(bud);
-		}
-		
-		
-		
-		
-		
-		List<Body> tracks = new ArrayList<Body>(Arrays.asList(track));
-		
-		
-		 tLength = 1f;
-		 twidth = 14f;
-		 track = new Body[20];
-		 length = (float) (634  / Globals.PPM);
-		 delta = 8 / Globals.PPM ;
-		
-		
-		for (int i = 0; i < track.length; i++) {
-			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(80f,world, length,146 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
-			track[i] = tr;
-			
-			BodyUserData bud = new BodyUserData();
-			bud.setHeight(twidth);
-			bud.setWidth(tLength);
-			track[i].setUserData(bud);
-		}
-		
-		
-		
-		
-		
-		tracks.addAll(Arrays.asList(track));
-		
-		
-		
-		
-		 tLength = 10;
-		 twidth = 10f;
-		 track = new Body[8];
-		 length = (float) (1234  / Globals.PPM);
-		 delta = 20 / Globals.PPM ;
-		
-		
-		for (int i = 0; i < track.length; i++) {
-			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(80f,world, length,146 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
-			track[i] = tr;
-			
-			BodyUserData bud = new BodyUserData();
-			bud.setHeight(twidth);
-			bud.setWidth(tLength);
-			track[i].setUserData(bud);
-		}
-		
-		
-		tracks.addAll(Arrays.asList(track));
-		
-		
-		 tLength = 25f;
-		 twidth = 25f;
-		 track = new Body[3];
-		 length = (float) (1434  / Globals.PPM);
-		 delta = 27 / Globals.PPM ;
-		
-		
-		for (int i = 0; i < track.length; i++) {
-			length = length + delta;
-			Body tr= BodyCreationUtils.rectangularBody(80f,world, length,146 / Globals.PPM,tLength / Globals.PPM, twidth / Globals.PPM);
-			track[i] = tr;
-			
-			BodyUserData bud = new BodyUserData();
-			bud.setHeight(twidth);
-			bud.setWidth(tLength);
-			track[i].setUserData(bud);
-		}
-		
-		
-		
-		tracks.addAll(Arrays.asList(track));
-	
-
-		return tracks;
-	}
+	}	
 	
 	@Override
 	public void update(float dt) {
@@ -308,9 +176,6 @@ public class Ground implements Entity {
 			}
 		}
 
-		
-		
-		
 		sb.end();
 
 	}

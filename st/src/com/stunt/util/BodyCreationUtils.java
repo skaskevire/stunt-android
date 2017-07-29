@@ -3,11 +3,11 @@ package com.stunt.util;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
@@ -40,21 +40,21 @@ public final class BodyCreationUtils {
 		return body;
 	}
 	
-	public static Body rectangularStaticBody(float density, World world, float x, float y, float width, float height)
+	public static Body rectangularStaticBody(World world, float x, float y, float width, float height)
 	{
 		PolygonShape psh = new PolygonShape();
 		FixtureDef fdef = new FixtureDef();
 		BodyDef bdef = new BodyDef();		
 		bdef.position.set(x, y);
 		bdef.type  = BodyType.StaticBody;
-		Body body = world.createBody(bdef);		
+		Body body = world.createBody(bdef);	
 		psh.setAsBox(width, height);
 		fdef.shape = psh;	
 		fdef.restitution = 0.4f;
-		fdef.density = density;
+		fdef.density = 1f;
 		fdef.friction = 0.8f;
+		//fdef.filter.maskBits = 0;
 		body.createFixture(fdef);
-		
 		return body;
 	}
 	
