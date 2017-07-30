@@ -8,6 +8,7 @@ import com.stunt.states.ChooseLevelMenu;
 import com.stunt.states.GameState;
 import com.stunt.states.MainMenu;
 import com.stunt.states.Play;
+import com.stunt.states.PlayEW;
 
 public class GameStateManager {
 	private Game game;
@@ -39,6 +40,10 @@ public class GameStateManager {
 		if(state == Globals.PLAY_GS)
 		{
 			String currentLevelPath = (String) objects[0];
+			if(currentLevelPath.contains("level3"))
+			{
+				return new PlayEW(this, currentLevelPath);
+			}
 			return new Play(this, currentLevelPath);
 		}
 		if(state == Globals.MAINMENU_GS)

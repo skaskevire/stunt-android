@@ -30,6 +30,7 @@ public class Game implements ApplicationListener{
 		res.loadTexture("res/images/track.gif", "trackEntity");
 		res.loadTexture("res/images/pritsep.gif", "pritsep");
 		res.loadTexture("res/images/truck.gif", "truck");
+		res.loadTexture("res/images/ew.gif", "ew");
 		res.loadTexture("res/images/tilableterraintexturefavella2.jpg", "terrain1");
 		res.loadTexture("res/images/background.jpg", "background");
 		

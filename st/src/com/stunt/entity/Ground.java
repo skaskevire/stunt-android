@@ -13,6 +13,10 @@ import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -34,16 +38,32 @@ public class Ground implements Entity {
 	private Body ground;
 	OrthographicCamera b2dCam;
 	private Body finishLine;
-	
-	
+	private OrthogonalTiledMapRenderer tmr;
+	private float tileSize;
 	private PolygonSprite groundPolygon;
 	 PolygonSpriteBatch polyBatch;
 	
 	
 	Vector2[] vectorArray;
 	
-	public Ground(World world, OrthographicCamera b2dCam, PolylineMapObject ta, RectangleMapObject ra, MapObjects obstacles1)
+	public Ground(World world, OrthographicCamera b2dCam, String levelPath)
 	{	
+		TiledMap tileMap = new TmxMapLoader().load(levelPath);
+		tmr = new OrthogonalTiledMapRenderer(tileMap,1 /Globals.PPM);
+
+		TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
+		layer.setOffsetX(0f);
+		layer.setOffsetY(808f);
+		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("ground");
+	RectangleMapObject ra = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
+	MapObjects obstacles1 = tileMap.getLayers().get("obstacles").getObjects();
+		
+		
+	tileSize = layer.getTileWidth();
+		
+		
+		
+		//PolylineMapObject ta, RectangleMapObject ra, MapObjects obstacles1
 		List<Body> o1list = new ArrayList<Body>();
 		try
 		{
@@ -147,7 +167,12 @@ public class Ground implements Entity {
 
 	@Override
 	public void render(SpriteBatch sb) {		    
-
+		tmr.setView(b2dCam);
+		tmr.render();	
+		
+		
+		
+		
 		polyBatch.setProjectionMatrix(sb.getProjectionMatrix());
 		    
 		    

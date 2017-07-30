@@ -22,7 +22,7 @@ import com.stunt.handlers.MyInput;
 import com.stunt.util.BodyCreationUtils;
 import com.stunt.util.BodyUserData;
 
-public class Truck implements Entity{
+public class Truck extends Wheicle{
 
 	private World world;
 	
@@ -31,12 +31,11 @@ public class Truck implements Entity{
 	private List<Body> tracks;
 	private Body cargo;
 	private Body truckBody;
-	private OrthographicCamera b2dCam;
+	//private OrthographicCamera b2dCam;
 	
 	public Truck(World world, OrthographicCamera b2dCam, float x, float y)
 	{
 		this.world = world;
-		this.b2dCam = b2dCam;
 		rollers = new ArrayList<Body>();
 		
 		//cargo = BodyCreationUtils.rectangularBody(10f,world, 165 / Globals.PPM,218 / Globals.PPM,20 / Globals.PPM, 10 / Globals.PPM);	
@@ -242,10 +241,16 @@ public class Truck implements Entity{
 		
 	}
 
+
+	@Override
+	public Vector2 getCameraTarget()
+	{
+		return rollers.get(2).getPosition();
+	}
+	
 	@Override
 	public void render(SpriteBatch sb) {
-		b2dCam.position.set(new Vector3(rollers.get(2).getPosition().x, rollers.get(2).getPosition().y, 0));
-		b2dCam.update();
+
 		sb.begin();
 		for(Body roller : rollers)
 		{
@@ -334,6 +339,7 @@ public class Truck implements Entity{
 	public void setTruckBody(Body truckBody) {
 		this.truckBody = truckBody;
 	}
+
 
 
 }

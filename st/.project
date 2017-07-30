@@ -14,4 +14,11 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>assets</name>
+			<type>2</type>
+			<location>E:/DEV/git/stunt-android/st-android/assets</location>
+		</link>
+	</linkedResources>
 </projectDescription>

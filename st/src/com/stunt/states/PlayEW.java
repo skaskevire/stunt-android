@@ -30,7 +30,7 @@ import com.stunt.handlers.GameStateManager;
 import com.stunt.handlers.MyInputProcessor;
 import com.stunt.util.FinishLineListener;
 
-public class Play extends GameState
+public class PlayEW extends GameState
 {
 
 	private World world;
@@ -39,7 +39,7 @@ public class Play extends GameState
 
 	private Map<String, Entity> entities;
 
-	public Play(GameStateManager gsm, String levelPath)
+	public PlayEW(GameStateManager gsm, String levelPath)
 	{
 		super(gsm);
 		Gdx.input.setInputProcessor(new MyInputProcessor());
@@ -51,7 +51,7 @@ public class Play extends GameState
 		b2dCam.setToOrtho(false, Globals.V_WIDTH / Globals.PPM, Globals.V_HEIGHT / Globals.PPM);
 
 		entities = new HashMap<String, Entity>();
-		entities.put("playerWheicle", new Truck(world, b2dCam, 0, 1330 / Globals.PPM));
+		entities.put("playerWheicle", new EightWheeler(world, b2dCam, 0, 1330 / Globals.PPM));
 		// entities.put("background", new Background());
 
 		entities.put("ground", new Ground(world, b2dCam, levelPath));
