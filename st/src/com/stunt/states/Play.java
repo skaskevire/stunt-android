@@ -105,6 +105,8 @@ public class Play extends GameState
 	@Override
 	public void render()
 	{
+	    Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+	    
 		b2dCam.position.set(new Vector3(((Wheicle)entities.get("playerWheicle")).getCameraTarget().x, ((Wheicle)entities.get("playerWheicle")).getCameraTarget().y, 0));
 		b2dCam.update();
 		try
