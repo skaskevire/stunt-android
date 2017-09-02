@@ -46,7 +46,7 @@ public class MainMenu extends GameState
 			play.setColor(Color.WHITE);
 			if (playTapped == true)
 			{
-				gsm.setState(Globals.CHOOSE_LEVEL_MENU_GS);
+				gsm.setState(Globals.CHOOSE_LEVEL_MENU_GS, null, null);
 			}
 		}
 

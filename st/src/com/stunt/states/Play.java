@@ -26,6 +26,8 @@ import com.stunt.entity.Entity;
 import com.stunt.entity.Ground;
 import com.stunt.entity.Truck;
 import com.stunt.entity.Wheicle;
+import com.stunt.entity.WheicleEnum;
+import com.stunt.entity.WheicleFactory;
 import com.stunt.handlers.GameStateManager;
 import com.stunt.handlers.MyInputProcessor;
 import com.stunt.util.FinishLineListener;
@@ -56,6 +58,24 @@ public class Play extends GameState
 
 		entities.put("ground", new Ground(world, b2dCam, levelPath));
 	}
+	
+	public Play(GameStateManager gsm, String levelPath, WheicleEnum playerWheicle)
+	{
+		super(gsm);
+		Gdx.input.setInputProcessor(new MyInputProcessor());
+		world = new World(new Vector2(0, -1.8f), true);
+		b2dr = new Box2DDebugRenderer();
+		world.setContactListener(new FinishLineListener(gsm));
+
+		b2dCam = new OrthographicCamera();
+		b2dCam.setToOrtho(false, Globals.V_WIDTH / Globals.PPM, Globals.V_HEIGHT / Globals.PPM);
+
+		entities = new HashMap<String, Entity>();
+		entities.put("playerWheicle", WheicleFactory.create(playerWheicle, world, b2dCam));
+		// entities.put("background", new Background());
+
+		entities.put("ground", new Ground(world, b2dCam, levelPath));
+	}
 
 	@Override
 	public void handleInput()
@@ -78,7 +98,7 @@ public class Play extends GameState
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			gsm.setState(Globals.MAINMENU_GS);			
+			gsm.setState(Globals.MAINMENU_GS, null, null);			
 		}
 	}
 
@@ -99,7 +119,7 @@ public class Play extends GameState
 		}
 		catch (Exception e)
 		{
-			gsm.setState(Globals.MAINMENU_GS);
+			gsm.setState(Globals.MAINMENU_GS, null, null);
 		}
 
 		// b2dr.render(world,b2dCam.combined);

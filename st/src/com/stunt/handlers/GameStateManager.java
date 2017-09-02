@@ -4,21 +4,22 @@ import java.util.Stack;
 
 import com.stunt.Game;
 import com.stunt.Globals;
+import com.stunt.entity.WheicleEnum;
 import com.stunt.states.ChooseLevelMenu;
+import com.stunt.states.ChooseWheicleMenu;
 import com.stunt.states.GameState;
 import com.stunt.states.MainMenu;
 import com.stunt.states.Play;
-import com.stunt.states.PlayEW;
 
 public class GameStateManager {
 	private Game game;
 	private Stack<GameState> gameStates;
-	
+
 	public GameStateManager(Game game)
 	{
 		this.game = game;
 		gameStates = new Stack<GameState>();
-		pushState(Globals.MAINMENU_GS);
+		pushState(Globals.MAINMENU_GS, null, null);
 		
 	}
 	
@@ -35,16 +36,11 @@ public class GameStateManager {
 	{
 		gameStates.peek().render();
 	}
-	public GameState getState(int state, Object ... objects)
+	public GameState getState(int state, String currentLevelPath, WheicleEnum wheicle)
 	{
 		if(state == Globals.PLAY_GS)
 		{
-			String currentLevelPath = (String) objects[0];
-			if(currentLevelPath.contains("level3"))
-			{
-				return new PlayEW(this, currentLevelPath);
-			}
-			return new Play(this, currentLevelPath);
+			return new Play(this, currentLevelPath, wheicle);
 		}
 		if(state == Globals.MAINMENU_GS)
 		{
@@ -54,18 +50,23 @@ public class GameStateManager {
 		{
 			return new ChooseLevelMenu(this);
 		}
+		if(state == Globals.CHOOSE_WHEICLE_MENU_GS)
+		{
+			return new ChooseWheicleMenu(this, currentLevelPath);
+		}
+		
 		return null;
 	}
 	
-	public void setState(int state, Object ... objects)
+	public void setState(int state, String currentLevelPath, WheicleEnum wheicle)
 	{
 		popState();
-		pushState(state, objects);
+		pushState(state, currentLevelPath, wheicle);
 	}
 	
-	public void pushState(int state, Object ... objects)
+	public void pushState(int state, String currentLevelPath, WheicleEnum wheicle)
 	{
-		gameStates.push(getState(state, objects));
+		gameStates.push(getState(state, currentLevelPath, wheicle));
 	}
 	
 	public void popState()

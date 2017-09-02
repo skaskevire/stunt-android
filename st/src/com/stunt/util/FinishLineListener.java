@@ -26,7 +26,7 @@ public class FinishLineListener implements ContactListener{
 			BodyUserData dc = (BodyUserData)fa.getBody().getUserData();
 			if(dc.getName()!=null && dc.getName().equals("finishLine"))
 			{
-				gsm.setState(Globals.MAINMENU_GS);
+				gsm.setState(Globals.MAINMENU_GS, null, null);
 			}
 		}
 		if(fb.getBody().getUserData() != null &&fb.getBody().getUserData() instanceof BodyUserData)
@@ -34,7 +34,7 @@ public class FinishLineListener implements ContactListener{
 			BodyUserData dc = (BodyUserData)fb.getBody().getUserData();
 			if(dc.getName()!=null && dc.getName().equals("finishLine"))
 			{
-				gsm.setState(Globals.MAINMENU_GS);
+				gsm.setState(Globals.MAINMENU_GS, null, null);
 			}
 
 		}

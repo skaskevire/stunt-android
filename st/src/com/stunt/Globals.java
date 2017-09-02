@@ -13,7 +13,7 @@ public class Globals {
 	public static final int MAINMENU_GS = 1;
 	
 	public static final int CHOOSE_LEVEL_MENU_GS = 2;
-	
+	public static final int CHOOSE_WHEICLE_MENU_GS = 3;
 	//Game configurations
 	public static final float STEP = 1 / 60f;
 
