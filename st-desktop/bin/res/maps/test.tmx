@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="352">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" nextobjectid="356">
  <tileset firstgid="1" name="terrainTop" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="terrainTop.bmp" width="32" height="32"/>
  </tileset>
@@ -139,4 +139,5 @@
   <object id="350" x="339.072" y="1788.86" width="25.1744" height="41.4274"/>
   <object id="351" x="328.697" y="1871.99" width="43.2312" height="16.2774"/>
  </objectgroup>
+ <objectgroup name="staticBodies"/>
 </map>

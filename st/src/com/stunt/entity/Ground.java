@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.CircleMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -31,6 +32,7 @@ import com.stunt.Game;
 import com.stunt.Globals;
 import com.stunt.util.BodyCreationUtils;
 import com.stunt.util.BodyUserData;
+import com.stunt.util.MapObjectManager;
 
 public class Ground implements Entity {
 	private World world;
@@ -42,54 +44,60 @@ public class Ground implements Entity {
 	private float tileSize;
 	private PolygonSprite groundPolygon;
 	 PolygonSpriteBatch polyBatch;
+	 
+	 private MapObjectManager mapObjectManager;
 	
 	
 	Vector2[] vectorArray;
-	
+
 	public Ground(World world, OrthographicCamera b2dCam, String levelPath)
 	{	
+		
+		mapObjectManager = new MapObjectManager(world);
+		
+		
 		TiledMap tileMap = new TmxMapLoader().load(levelPath);
 		tmr = new OrthogonalTiledMapRenderer(tileMap,1 /Globals.PPM);
 
 		TiledMapTileLayer layer = (TiledMapTileLayer) tileMap.getLayers().get("Tile Layer 1");
 		layer.setOffsetX(0f);
 		layer.setOffsetY(808f);
+		
 		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("ground");
-	RectangleMapObject ra = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
-	MapObjects obstacles1 = tileMap.getLayers().get("obstacles").getObjects();
-		
-		
+
+		RectangleMapObject ra = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
+	MapObjects obstacles = tileMap.getLayers().get("obstacles").getObjects();		
+	MapObjects staticObstacles = tileMap.getLayers().get("staticBodies").getObjects();
+	
+	
 	tileSize = layer.getTileWidth();
 		
-		
-		
-		//PolylineMapObject ta, RectangleMapObject ra, MapObjects obstacles1
-		List<Body> o1list = new ArrayList<Body>();
+
 		try
 		{
-			for(MapObject obstacle : obstacles1)
+			for(MapObject obstacle : obstacles)
 			{
-				RectangleMapObject rmo = (RectangleMapObject) obstacle;
-
-				BodyUserData bud = new BodyUserData();
-				bud.setHeight(rmo.getRectangle().height/2);
-				bud.setWidth(rmo.getRectangle().width/2);
-				
-			
-				
-				
-				
-				
-				
-				Body rb = BodyCreationUtils.rectangularBody(80f, world, (rmo.getRectangle().x + rmo.getRectangle().width/2)/ Globals.PPM, (rmo.getRectangle().y + rmo.getRectangle().height/2)/ Globals.PPM, rmo.getRectangle().width/ (Globals.PPM*2), rmo.getRectangle().height/ (Globals.PPM*2));
-				rb.setUserData(bud);
-				o1list.add(rb);
+				mapObjectManager.addMO(obstacle);
 			}
-
 		}catch(Throwable e)
 		{
-			System.out.println("dsds");
+			e.printStackTrace();
+		}		
+		try
+		{
+			for(MapObject staticBody : staticObstacles)
+			{
+				mapObjectManager.addStaticMO(staticBody);
+			}
+		}catch(Throwable e)
+		{
+			e.printStackTrace();
 		}
+		
+		
+		
+		
+		
 
 		this.world = world;
 		this.b2dCam = b2dCam;
@@ -112,8 +120,11 @@ public class Ground implements Entity {
 		bud.setWidth(ra.getRectangle().width/2);
 		bud.setName("finishLine");
 		finishLine.setUserData(bud);
-		obstacles = o1list;
-		obstacles.add(finishLine);
+		
+		
+		this.obstacles = new ArrayList<Body>();
+		this.obstacles.add(finishLine);
+		this.obstacles.addAll(mapObjectManager.getRectangularBodyList());
 		
 		
 		//create ground polygon

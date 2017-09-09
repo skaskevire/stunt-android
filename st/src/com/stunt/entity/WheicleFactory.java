@@ -12,7 +12,10 @@ public class WheicleFactory {
 		switch(wheicle)
 		{
 		case EIGHT_WHEELER:
-			createdWheicle = new EightWheeler(world, b2dCam, 0, 1330 / Globals.PPM);
+			createdWheicle = new EightWheeler(world, b2dCam, 0, 1330 / Globals.PPM, "ew");
+			break;
+		case BTR_60:
+			createdWheicle = new EightWheeler(world, b2dCam, 0, 1330 / Globals.PPM, "btr60");
 			break;
 		case TRUCK:
 			createdWheicle = new Truck(world, b2dCam, 0, 1330 / Globals.PPM);

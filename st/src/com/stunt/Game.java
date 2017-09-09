@@ -28,10 +28,12 @@ public class Game implements ApplicationListener{
 		res = new Content();
 		res.loadTexture("res/images/box.gif", "box25");
 		res.loadTexture("res/images/wheel.gif", "wheel10");
+		res.loadTexture("res/images/wheelEW.gif", "wheelEW");
 		res.loadTexture("res/images/track.gif", "trackEntity");
 		res.loadTexture("res/images/pritsep.gif", "pritsep");
 		res.loadTexture("res/images/truck.gif", "truck");
 		res.loadTexture("res/images/ew.gif", "ew");
+		res.loadTexture("res/images/btr60.gif", "btr60");
 		res.loadTexture("res/images/tilableterraintexturefavella2.jpg", "terrain1");
 		res.loadTexture("res/images/background.jpg", "background");
 		

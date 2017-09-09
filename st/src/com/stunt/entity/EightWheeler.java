@@ -24,8 +24,10 @@ public class EightWheeler  extends Wheicle
 	private Body ewBody;
 	private List<Body> rollers;
 	private World world;
-	public EightWheeler(World world, OrthographicCamera b2dCam, float x, float y)
+	private String skin;
+	public EightWheeler(World world, OrthographicCamera b2dCam, float x, float y, String skin)
 	{
+		this.skin = skin;
 		this.world = world;
 		rollers = new ArrayList<Body>();
 		
@@ -135,7 +137,7 @@ public class EightWheeler  extends Wheicle
 		sb.begin();
 		
 		sb.draw(new TextureRegion(
-				Game.res.getTexture("ew")),
+				Game.res.getTexture(skin)),
 				ewBody.getPosition().x- 10/Globals.PPM, ewBody.getPosition().y- 72/Globals.PPM,
 				10f/Globals.PPM, 72f/Globals.PPM,
 				35f/Globals.PPM, 150f/Globals.PPM,
@@ -145,7 +147,7 @@ public class EightWheeler  extends Wheicle
 		for(Body roller : rollers)
 		{
 			sb.draw(new TextureRegion(
-					Game.res.getTexture("wheel10")),
+					Game.res.getTexture("wheelEW")),
 					roller.getPosition().x- 10/Globals.PPM, roller.getPosition().y- 10/Globals.PPM,
 					10/Globals.PPM, 10/Globals.PPM,
 					20/Globals.PPM, 20/Globals.PPM,

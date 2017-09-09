@@ -42,10 +42,19 @@ public final class BodyCreationUtils {
 	
 	public static Body rectangularStaticBody(World world, float x, float y, float width, float height)
 	{
+		return rectangularStaticBody(world, x, y, width, height, null);
+	}
+	
+	public static Body rectangularStaticBody(World world, float x, float y, float width, float height, Float rotation)
+	{
 		PolygonShape psh = new PolygonShape();
 		FixtureDef fdef = new FixtureDef();
 		BodyDef bdef = new BodyDef();		
 		bdef.position.set(x, y);
+		if(rotation != null)
+		{
+			bdef.angle = rotation;
+		}		
 		bdef.type  = BodyType.StaticBody;
 		Body body = world.createBody(bdef);	
 		psh.setAsBox(width, height);

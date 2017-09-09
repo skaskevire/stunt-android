@@ -1,7 +1,7 @@
 package com.stunt.entity;
 
 public enum WheicleEnum {
-	TRUCK("Truck On Tracks"), EIGHT_WHEELER("Cross-Country Vehicle");
+	TRUCK("Truck On Tracks"), EIGHT_WHEELER("Cross-Country Vehicle"), BTR_60("BTR-60");
 	private final String name;
 	WheicleEnum(String name)
 	{
