@@ -37,6 +37,7 @@ import com.stunt.util.MapObjectManager;
 public class Ground implements Entity {
 	private World world;
 	private List<Body> obstacles;
+	private List<Body> circularObstacles;
 	private Body ground;
 	OrthographicCamera b2dCam;
 	private Body finishLine;
@@ -66,8 +67,21 @@ public class Ground implements Entity {
 		PolylineMapObject ta = (PolylineMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("ground");
 
 		RectangleMapObject ra = (RectangleMapObject) tileMap.getLayers().get("Object Layer 1").getObjects().get("finishLine");
-	MapObjects obstacles = tileMap.getLayers().get("obstacles").getObjects();		
-	MapObjects staticObstacles = tileMap.getLayers().get("staticBodies").getObjects();
+	MapObjects obstacles = null;
+	
+	
+	if(tileMap.getLayers().get("obstacles") != null)
+	{
+		obstacles = tileMap.getLayers().get("obstacles").getObjects();
+	}
+	
+	
+	MapObjects staticObstacles = null;
+	if(tileMap.getLayers().get("staticBodies") !=null)
+	{
+		staticObstacles = tileMap.getLayers().get("staticBodies").getObjects();
+	}
+		
 	
 	
 	tileSize = layer.getTileWidth();
@@ -75,20 +89,28 @@ public class Ground implements Entity {
 
 		try
 		{
-			for(MapObject obstacle : obstacles)
+			if(obstacles != null)
 			{
-				mapObjectManager.addMO(obstacle);
+				for(MapObject obstacle : obstacles)
+				{
+					mapObjectManager.addMO(obstacle);
+				}
 			}
+			
 		}catch(Throwable e)
 		{
 			e.printStackTrace();
 		}		
 		try
 		{
-			for(MapObject staticBody : staticObstacles)
+			if(staticObstacles != null)
 			{
-				mapObjectManager.addStaticMO(staticBody);
+				for(MapObject staticBody : staticObstacles)
+				{
+					mapObjectManager.addStaticMO(staticBody);
+				}
 			}
+
 		}catch(Throwable e)
 		{
 			e.printStackTrace();
@@ -123,9 +145,10 @@ public class Ground implements Entity {
 		
 		
 		this.obstacles = new ArrayList<Body>();
+		this.circularObstacles = new ArrayList<Body>();
 		this.obstacles.add(finishLine);
 		this.obstacles.addAll(mapObjectManager.getRectangularBodyList());
-		
+		this.circularObstacles.addAll(mapObjectManager.getCircleBodyList());
 		
 		//create ground polygon
 		EarClippingTriangulator a = new EarClippingTriangulator();
@@ -204,6 +227,22 @@ public class Ground implements Entity {
 
 					sb.draw(new TextureRegion(
 							Game.res.getTexture("box25")),
+							obstacle.getPosition().x- ((BodyUserData)obstacle.getUserData()).getHeight()/(Globals.PPM * 2), obstacle.getPosition().y- ((BodyUserData)obstacle.getUserData()).getWidth()/(Globals.PPM * 2),
+							((BodyUserData)obstacle.getUserData()).getHeight()/(Globals.PPM * 2),((BodyUserData)obstacle.getUserData()).getWidth()/(Globals.PPM * 2),
+							((BodyUserData)obstacle.getUserData()).getHeight()/Globals.PPM, ((BodyUserData)obstacle.getUserData()).getWidth()/Globals.PPM,
+							2, 2,
+							obstacle.getAngle() * MathUtils.radiansToDegrees + 90f, false);
+			}
+		}
+		
+		
+		if(circularObstacles != null)
+		{
+			for(Body obstacle : circularObstacles)
+			{
+
+					sb.draw(new TextureRegion(
+							Game.res.getTexture("circle")),
 							obstacle.getPosition().x- ((BodyUserData)obstacle.getUserData()).getHeight()/(Globals.PPM * 2), obstacle.getPosition().y- ((BodyUserData)obstacle.getUserData()).getWidth()/(Globals.PPM * 2),
 							((BodyUserData)obstacle.getUserData()).getHeight()/(Globals.PPM * 2),((BodyUserData)obstacle.getUserData()).getWidth()/(Globals.PPM * 2),
 							((BodyUserData)obstacle.getUserData()).getHeight()/Globals.PPM, ((BodyUserData)obstacle.getUserData()).getWidth()/Globals.PPM,

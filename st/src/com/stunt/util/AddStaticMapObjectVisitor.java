@@ -24,12 +24,20 @@ public class AddStaticMapObjectVisitor implements MapObjectVisitor
 	@Override
 	public void visit(RectangleMapObject rmo)
 	{
-		String rotationStr = rmo.getProperties().get("rotation", String.class);
+		String rotationStr = null;
+		try {
+			rotationStr = String.valueOf(rmo.getProperties().get("rotation", String.class));
+		}
+		catch (ClassCastException e)
+		{
+			e.printStackTrace();
+		}
+		
 		Float rotation = null;
 		Float deltay = 0f;
-		if(rotationStr != null)
+		if(rotationStr != null && !rotationStr.equals("null"))
 		{
-			rotation = Float.parseFloat(rmo.getProperties().get("rotation", String.class));
+			rotation = Float.parseFloat(String.valueOf(rmo.getProperties().get("rotation", String.class)));
 			rotation = -( 3.14f * rotation ) / 180f;
 			
 			
@@ -63,7 +71,15 @@ public class AddStaticMapObjectVisitor implements MapObjectVisitor
 	@Override
 	public void visit(EllipseMapObject cmo)
 	{
-		// TODO Auto-generated method stub
+		BodyUserData bud = new BodyUserData();
+		bud.setHeight(cmo.getEllipse().height/2);
+		bud.setWidth(cmo.getEllipse().width/2);
+		Body cb = BodyCreationUtils.circularBodyStatic(world,( cmo.getEllipse().x + cmo.getEllipse().height/2 )/ Globals.PPM, (cmo.getEllipse().y + cmo.getEllipse().width/2 )/ Globals.PPM, cmo.getEllipse().height / ( Globals.PPM * 2 ), 80f);
+		
+		cb.setUserData(bud);
+		
+		mapObjectManager.getCircleBodyList().add(cb);
+
 		
 	}
 

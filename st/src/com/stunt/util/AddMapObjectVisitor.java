@@ -39,14 +39,17 @@ public class AddMapObjectVisitor implements MapObjectVisitor
 	@Override
 	public void visit(CircleMapObject cmo)
 	{
-/*		BodyUserData bud = new BodyUserData();
-		bud.setHeight(cmo.getCircle().radius);
-		bud.setWidth(cmo.getCircle().radius);
+		BodyUserData bud = new BodyUserData();
+		bud.setHeight(cmo.getCircle().radius/ Globals.PPM);
+		bud.setWidth(cmo.getCircle().radius/ Globals.PPM);
+		Body cb = BodyCreationUtils.circularBody(world, cmo.getCircle().x/ Globals.PPM, cmo.getCircle().y/ Globals.PPM, cmo.getCircle().radius/ Globals.PPM, 80f);
 		
-		Body rb = BodyCreationUtils.rectangularBody(80f, world, (rmo.getRectangle().x + rmo.getRectangle().width/2)/ Globals.PPM, (rmo.getRectangle().y + rmo.getRectangle().height/2)/ Globals.PPM, rmo.getRectangle().width/ (Globals.PPM*2), rmo.getRectangle().height/ (Globals.PPM*2));
-		rb.setUserData(bud);
 		
-		mapObjectManager.getRectangularBodyList().add(rb);*/
+		
+		//Body rb = BodyCreationUtils.rectangularBody(80f, world, (rmo.getRectangle().x + rmo.getRectangle().width/2)/ Globals.PPM, (rmo.getRectangle().y + rmo.getRectangle().height/2)/ Globals.PPM, rmo.getRectangle().width/ (Globals.PPM*2), rmo.getRectangle().height/ (Globals.PPM*2));
+		cb.setUserData(bud);
+		
+		mapObjectManager.getCircleBodyList().add(cb);
 
 		
 	}
@@ -61,7 +64,18 @@ public class AddMapObjectVisitor implements MapObjectVisitor
 	@Override
 	public void visit(EllipseMapObject cmo)
 	{
-		// TODO Auto-generated method stub
+		BodyUserData bud = new BodyUserData();
+		bud.setHeight(cmo.getEllipse().height/2);
+		bud.setWidth(cmo.getEllipse().width/2);
+		Body cb = BodyCreationUtils.circularBody(world, cmo.getEllipse().x/ Globals.PPM, cmo.getEllipse().y/ Globals.PPM, cmo.getEllipse().height / ( Globals.PPM * 2 ), 80f);
+		
+		
+		
+		//Body rb = BodyCreationUtils.rectangularBody(80f, world, (rmo.getRectangle().x + rmo.getRectangle().width/2)/ Globals.PPM, (rmo.getRectangle().y + rmo.getRectangle().height/2)/ Globals.PPM, rmo.getRectangle().width/ (Globals.PPM*2), rmo.getRectangle().height/ (Globals.PPM*2));
+		cb.setUserData(bud);
+		
+		mapObjectManager.getCircleBodyList().add(cb);
+
 		
 	}
 

@@ -177,4 +177,24 @@ public final class BodyCreationUtils {
 		return body;
 	}
 	
+	
+	public static Body circularBodyStatic(World world, float x, float y, float radius, float density)
+	{
+		CircleShape cshape = new CircleShape();	
+		cshape.setRadius(radius);
+		BodyDef bdef = new BodyDef();
+		bdef.position.set(x, y);		
+		bdef.type  = BodyType.StaticBody;
+		Body body = world.createBody(bdef);
+		
+		FixtureDef fdef = new FixtureDef();
+		fdef.shape = cshape;	
+		fdef.restitution = 0.35f;
+		fdef.density = density;
+		fdef.friction = 10;
+		body.createFixture(fdef);
+		
+		return body;
+	}
+	
 }
